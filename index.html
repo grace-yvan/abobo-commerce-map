@@ -4,72 +4,81 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Abobo H-B TradeMap | GRACE & YVAN</title>
-    <meta name="author" content="KPAN MANDOH GRACE & OKOU YVAN CÉDRICK">
-    <meta name="description" content="Carte interactive des 92 commerces de la zone Houphouët-Boigny, Abobo - Projet PCT UVCI 2026">
     
+    <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <!-- Style personnalisé -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="app">
+        <!-- En-tête -->
         <header class="header">
-            <div class="logo">
-                <h1>🏪 <span class="violet">Abobo</span> <span class="vert">H-B TradeMap</span></h1>
-                <p>Visualisez tous les commerces de la zone Houphouët-Boigny</p>
-            </div>
-            <div class="uvci">
-                <span class="badge-violet">GRACE & YVAN</span>
-                <span class="badge-vert">PCT 2026</span>
-            </div>
+            <h1>🏪 <span class="violet">Abobo</span> <span class="vert">H-B TradeMap</span></h1>
+            <p>Visualisez tous les commerces de la zone Houphouët-Boigny</p>
         </header>
 
+        <!-- Contenu principal -->
         <main>
+            <!-- Panneau latéral gauche -->
+            <aside class="sidebar">
+                <div class="search-box">
+                    <input type="text" id="search" placeholder="🔍 Rechercher un commerce...">
+                </div>
+                
+                <button id="locateBtn" class="locate-btn">📍 Ma position</button>
+                <button id="darkModeBtn" class="dark-mode-btn">🌙 Mode sombre</button>
+                
+                <div class="stats-card">
+                    <h3>📊 Statistiques</h3>
+                    <div id="stats-container"></div>
+                    <canvas id="statsChart" width="200" height="200" style="margin-top: 10px;"></canvas>
+                </div>
+
+                <div class="filters-card">
+                    <h3>📂 Filtrer par catégorie</h3>
+                    <div id="categories-list"></div>
+                    <button id="resetFilters" class="reset-btn">🔄 Afficher tout</button>
+                    <button id="exportPDF" class="export-btn">📄 Exporter rapport PDF</button>
+                </div>
+
+                <div class="info-card">
+                    <h3>ℹ️ Contacts</h3>
+                    <a href="mailto:mandoh1.kpan@uvci.edu.ci">📧 mandoh1.kpan@uvci.edu.ci</a>
+                    <a href="mailto:cedrick.okou@uvci.edu.ci">📧 cedrick.okou@uvci.edu.ci</a>
+                    <a href="tel:+2250717758842">📞 +225 07 17 75 88 42</a>
+                    <a href="tel:+2250544862381">📞 +225 05 44 86 23 81</a>
+                    <a href="https://www.linkedin.com/in/mando-grace-081011357" target="_blank">🔗 LinkedIn GRACE</a>
+                    <a href="https://www.snapchat.com/add/mandograce" target="_blank">👻 Snapchat GRACE</a>
+                    <a href="https://www.tiktok.com/@grace.m.2707" target="_blank">🎵 TikTok GRACE</a>
+                    <a href="https://github.com/gkpan68-beep" target="_blank">🐙 GitHub GRACE</a>
+                </div>
+            </aside>
+
+            <!-- Carte -->
             <div class="map-container">
                 <div id="map"></div>
             </div>
         </main>
 
+        <!-- Pied de page -->
         <footer class="footer">
-            <div class="footer-info">
-                <div class="stats-minimal">
-                    <div class="stat-minimal">
-                        <span class="stat-value" id="total">0</span>
-                        <span class="stat-label">Commerces</span>
-                    </div>
-                    <div class="stat-minimal">
-                        <span class="stat-value" id="categoriesCount">0</span>
-                        <span class="stat-label">Catégories</span>
-                    </div>
-                    <div class="stat-minimal">
-                        <span class="stat-value" id="displayed">0</span>
-                        <span class="stat-label">Affichés</span>
-                    </div>
-                </div>
-                
-                <div class="social-links">
-                    <a href="mailto:mandoh1.kpan@uvci.edu.ci" class="social-btn">📧 mandoh1.kpan@uvci.edu.ci</a>
-                    <a href="mailto:cedrick.okou@uvci.edu.ci" class="social-btn">📧 cedrick.okou@uvci.edu.ci</a>
-                    <a href="tel:+2250717758842" class="social-btn">📞 +225 07 17 75 88 42</a>
-                    <a href="tel:+2250544862381" class="social-btn">📞 +225 05 44 86 23 81</a>
-                    <a href="https://www.linkedin.com/in/mando-grace-081011357" class="social-btn" target="_blank">🔗 LinkedIn</a>
-                    <a href="https://www.snapchat.com/add/mandograce" class="social-btn" target="_blank">👻 Snapchat</a>
-                    <a href="https://www.tiktok.com/@grace.m.2707" class="social-btn" target="_blank">🎵 TikTok</a>
-                    <a href="https://github.com/gkpan68-beep" class="social-btn" target="_blank">🐙 GitHub</a>
-                    <a href="#" class="social-btn">🔗 LinkedIn</a>
-                    <a href="#" class="social-btn">🐙 GitHub</a>
-                </div>
-                
-                <div class="copyright">
-                    <p>© 2026 - Projet PCT - Université Virtuelle de Côte d'Ivoire (UVCI)</p>
-                    <p>KPAN MANDOH GRACE | OKOU YVAN CÉDRICK</p>
-                    <p>📐 Projection : WGS 84 (EPSG:4326) | 📊 Enquête terrain 2026</p>
-                </div>
-            </div>
+            <p>© 2026 - Projet PCT - Université Virtuelle de Côte d'Ivoire (UVCI)</p>
+            <p>KPAN MANDOH GRACE | OKOU YVAN CÉDRICK</p>
         </footer>
     </div>
 
+    <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <!-- Chart.js pour les graphiques -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    
+    <!-- Données -->
     <script src="data.js"></script>
+    
+    <!-- Application -->
     <script src="script.js"></script>
 </body>
 </html>
