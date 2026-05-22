@@ -26,7 +26,7 @@ var categoryColors = {
     'Sante': '#1E8F6B'
 };
 
-// Icônes personnalisées par catégorie
+// Icônes rondes personnalisées par catégorie
 function getIcon(categorie) {
     var color = categoryColors[categorie] || '#95A5A6';
     var icons = {
@@ -37,9 +37,10 @@ function getIcon(categorie) {
     var emoji = icons[categorie] || '📍';
     
     return L.divIcon({
-        html: '<div style="background:' + color + ';width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;border:2px solid white;box-shadow:0 2px 5px rgba(0,0,0,0.2);">' + emoji + '</div>',
-        iconSize: [32, 32],
-        popupAnchor: [0, -15]
+        html: '<div style="background:' + color + ';width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;border:3px solid white;box-shadow:0 2px 8px rgba(0,0,0,0.25);">' + emoji + '</div>',
+        iconSize: [36, 36],
+        popupAnchor: [0, -18],
+        className: 'rounded-marker'
     });
 }
 
@@ -187,6 +188,11 @@ function filterByCategory(category) {
     }
     displayCommerces(filtered);
     document.getElementById('search').value = '';
+    
+    // Fermer le menu mobile après filtrage
+    if (window.innerWidth <= 768) {
+        document.getElementById('sidebar').classList.remove('open');
+    }
 }
 
 // Filtre par recherche
@@ -216,6 +222,11 @@ function resetFilters() {
     var items = document.querySelectorAll('.category-item');
     for (var i = 0; i < items.length; i++) items[i].classList.remove('active');
     document.getElementById('search').value = '';
+    
+    // Fermer le menu mobile après reset
+    if (window.innerWidth <= 768) {
+        document.getElementById('sidebar').classList.remove('open');
+    }
 }
 
 // Géolocalisation
@@ -225,8 +236,12 @@ document.getElementById('locateBtn').addEventListener('click', function() {
             var lat = pos.coords.latitude;
             var lng = pos.coords.longitude;
             map.setView([lat, lng], 16);
-            L.marker([lat, lng]).addTo(map)
-                .bindPopup('📍 Vous êtes ici').openPopup();
+            L.marker([lat, lng], {
+                icon: L.divIcon({
+                    html: '<div style="background:#3498DB;width:20px;height:20px;border-radius:50%;border:2px solid white;box-shadow:0 2px 5px rgba(0,0,0,0.2);"></div>',
+                    iconSize: [20, 20]
+                })
+            }).addTo(map).bindPopup('📍 Vous êtes ici').openPopup();
         }, function() {
             alert('Géolocalisation non autorisée');
         });
@@ -271,7 +286,7 @@ document.getElementById('exportPDF').addEventListener('click', function() {
         categories[cat] = (categories[cat] || 0) + 1;
     }
     
-    printWindow.document.write('<tr>');
+    printWindow.document.write('<table>');
     printWindow.document.write('<tr><th>Catégorie</th><th>Nombre</th></tr>');
     for (var cat in categories) {
         printWindow.document.write('<tr><td>' + cat + '</td><td>' + categories[cat] + '</td></tr>');
@@ -279,19 +294,39 @@ document.getElementById('exportPDF').addEventListener('click', function() {
     printWindow.document.write('</table>');
     
     printWindow.document.write('<h2>🏪 Liste des commerces</h2>');
-    printWindow.document.write('<table>');
+    printWindow.document.write('能率');
     printWindow.document.write('<tr><th>Nom</th><th>Catégorie</th><th>Enquête N°</th></tr>');
     for (var i = 0; i < allFeatures.length; i++) {
         var p = allFeatures[i].properties;
-        printWindow.document.write('<tr><td>' + (p.nom_commerce || '-') + '</td><td>' + (p.categorie || '-') + '</td><td>' + (p.num_enquete || '-') + '</td></tr>');
+        printWindow.document.write('<tr><td>' + (p.nom_commerce || '-') + '</td>' +
+            '<td>' + (p.categorie || '-') + '</td>' +
+            '<td>' + (p.num_enquete || '-') + '</td>' +
+            '</tr>');
     }
-    printWindow.document.write('</table>');
+    printWindow.document.write('能率');
     printWindow.document.write('<hr>');
     printWindow.document.write('<p>© 2026 - Projet PCT - Université Virtuelle de Côte d\'Ivoire (UVCI)</p>');
     printWindow.document.write('<p>KPAN MANDOH GRACE | OKOU YVAN CÉDRICK</p>');
     printWindow.document.write('</body></html>');
     printWindow.document.close();
     printWindow.print();
+});
+
+// Menu burger pour mobile
+var menuToggle = document.getElementById('menuToggle');
+var sidebar = document.getElementById('sidebar');
+
+if (menuToggle) {
+    menuToggle.addEventListener('click', function() {
+        sidebar.classList.toggle('open');
+    });
+}
+
+// Fermer le menu quand on clique en dehors (sur la carte)
+document.getElementById('map').addEventListener('click', function() {
+    if (window.innerWidth <= 768) {
+        sidebar.classList.remove('open');
+    }
 });
 
 // Écouteurs

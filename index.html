@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Abobo H-B TradeMap | GRACE & YVAN</title>
     
     <!-- Leaflet CSS -->
@@ -19,10 +19,13 @@
             <p>Visualisez tous les commerces de la zone Houphouët-Boigny</p>
         </header>
 
+        <!-- Bouton menu burger pour mobile -->
+        <button class="menu-toggle" id="menuToggle">☰</button>
+
         <!-- Contenu principal -->
         <main>
             <!-- Panneau latéral gauche -->
-            <aside class="sidebar">
+            <aside class="sidebar" id="sidebar">
                 <div class="search-box">
                     <input type="text" id="search" placeholder="🔍 Rechercher un commerce...">
                 </div>
